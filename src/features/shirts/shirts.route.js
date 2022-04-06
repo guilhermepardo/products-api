@@ -2,13 +2,11 @@ const express = require('express');
 const router = express.Router();
 const shirtsController = require('./shirts.controller')
 
-router.get('/get', shirtsController.get);
-// router.get('/get', async (req, res) => {
-//     const database = req.app.locals.db;
-//     const collection = database.collection('users');
-//     const shirtsFound = await collection.find({}).toArray();
-//     res.json({ shirtsFound: shirtsFound });
-// });
+router.post('/', shirtsController.post);
+router.get('/', shirtsController.get);
+router.get('/:id', shirtsController.getById);
+router.put('/:id', shirtsController.updateById);
+router.delete('/:id', shirtsController.deleteById);
 
 module.exports = router;
 
