@@ -30,6 +30,8 @@ class Service {
         try {
             const shirt = await this.collection.findById(id);
 
+            if (!shirt) throw { status: 400, message: 'Shirt not found' }
+
             return shirt;
 
         } catch (error) {
@@ -41,6 +43,8 @@ class Service {
         try {
             const shirt = await this.collection.updateById(id, body);
 
+            if (shirt.matchedCount === 0) throw { status: 400, message: 'Shirt not found' };
+
             return shirt;
 
         } catch (error) {
@@ -51,6 +55,8 @@ class Service {
     async deleteById(id) {
         try {
             const shirt = await this.collection.deleteById(id);
+
+            if (shirt.deletedCount === 0) throw { status: 400, message: 'Shirt not found' }
 
             return shirt;
 
