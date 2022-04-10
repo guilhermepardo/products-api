@@ -8,7 +8,6 @@ router.get('/', validation, shirtsController.get);
 router.get('/:id', validation, shirtsController.getById);
 router.put('/:id', validation, shirtsController.updateById);
 router.delete('/:id', validation, shirtsController.deleteById);
-router.put('/:id', validation, shirtsController.isActiveSwitch);
 
 module.exports = router;
 
