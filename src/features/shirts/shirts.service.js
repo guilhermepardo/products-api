@@ -1,15 +1,19 @@
 const MongoCollection = require('../../../config/mongodb/Collection');
+const Helper = require('./shirt.helper');
 class Service {
     constructor(database) {
-        this.collection = new MongoCollection(database, 'shirts');
+        this.database = database;
+        this.collection = new MongoCollection(this.database, 'shirts');
+        this.helper = new Helper;
     };
 
     async post(body) {
         try {
-            const shirt = await this.collection.insertOne(body);
+            const model = this.helper.model(body);
+
+            const shirt = await this.collection.insertOne(model);
 
             return shirt;
-
         } catch (error) {
             throw error;
         };
@@ -20,7 +24,6 @@ class Service {
             const shirts = await this.collection.find();
 
             return shirts;
-
         } catch (error) {
             throw error;
         };
@@ -33,7 +36,6 @@ class Service {
             if (!shirt) throw { status: 400, message: 'Shirt not found' };
 
             return shirt;
-
         } catch (error) {
             throw error;
         };
@@ -41,12 +43,13 @@ class Service {
 
     async updateById(id, body) {
         try {
+            body.updatedAt = new Date().toISOString();
+
             const shirt = await this.collection.updateById(id, body);
 
             if (shirt.matchedCount === 0) throw { status: 400, message: 'Shirt not found' };
 
             return shirt;
-
         } catch (error) {
             throw error;
         };
@@ -59,7 +62,6 @@ class Service {
             if (shirt.matchedCount === 0) throw { status: 400, message: 'Shirt not found' };
 
             return shirt;
-
         } catch (error) {
             throw error;
         };
