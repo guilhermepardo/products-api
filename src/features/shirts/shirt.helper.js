@@ -39,7 +39,7 @@ class Helper {
             this.validation(body);
 
             body.available = body.available ? body.available : false; 
-            body.quantity = null;
+            body.quantity = 0;
             body.deleted = false;
             body.isActive = body.isActive ? body.isActive : false;
             body.createdAt = new Date().toISOString();

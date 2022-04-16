@@ -42,7 +42,7 @@ class Helper {
         try {
             this.validation(body);
 
-            body.available = body.available ? body.available : false;
+            body.available = body.quantity > 0 ? true : false;
             body.product = new ObjectId(body.product);
             body.deleted = false;
             body.isActive = body.isActive ? body.isActive : false;
