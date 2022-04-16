@@ -10,5 +10,3 @@ router.put('/:id', validation, shirtsController.updateById);
 router.delete('/:id', validation, shirtsController.deleteById);
 
 module.exports = router;
-
-

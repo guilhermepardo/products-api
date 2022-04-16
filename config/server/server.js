@@ -1,32 +1,8 @@
 const express = require('express');
-// const { Router } = require('express');
 const MongoConnect = require('../mongodb/Connect');
 require('dotenv').config();
 const shirtsRoutes = require('../../src/features/shirts/shirts.route');
-// const { MongoClient } = require('mongodb');
-
-// const client = new MongoClient(process.env.MONGO_DB_ATLAS);
-
-// const app = express();
-
-// const router = Router();
-
-// router.get('/', async (req, res) => {
-//   const database = req.app.locals.db;
-//   const collection = database.collection('shirts');
-//   const shirtsFound = await collection.find({}).toArray();
-//   res.json({ shirtsFound: shirtsFound });
-// });
-
-// app.use('/api/v1/shirts', shirtsRoutes);
-// app.use('/api/v1/shirts', router);
-
-// client.connect(() => {
-//   console.log('Connected to MongoDB');
-//   app.listen(3000, () => console.log('Listening on port 3000'));
-//   app.locals.db = client.db('db');
-// });
-
+const specificationsRoutes = require('../../src/features/specifications/specifications.route');
 class App {
   constructor() {
     this.app = express();
@@ -43,6 +19,7 @@ class App {
 
   async routes() {
     this.app.use('/api/v1/shirts', shirtsRoutes);
+    this.app.use('/api/v1/specifications', specificationsRoutes);
   };
 
   async initialize() {

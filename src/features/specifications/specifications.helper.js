@@ -14,12 +14,12 @@ class Helper {
 
     validation(body) {
         try {
-
             if (!body || body === {}) throw { status: 400, message: 'No body sent to post.' };
             if (!body.hasOwnProperty('name') || typeof body.name != 'string') throw { status: 400, message: 'Property name must be a string.' };
-            if (!body.hasOwnProperty('basic') || typeof body.basic != 'boolean') throw { status: 400, message: 'Property basic must be a boolean.' };
-            if (!body.hasOwnProperty('price') || typeof body.price != 'number') throw { status: 400, message: 'Property price must be a number.' };
-            if (!body.hasOwnProperty('images') || !Array.isArray(body.images)) throw { status: 400, message: 'Property images must be an array.' };
+            if (!body.hasOwnProperty('color') || typeof body.color != 'string') throw { status: 400, message: 'Property color must be a string.' };
+            if (!body.hasOwnProperty('size') || typeof body.size != 'string') throw { status: 400, message: 'Property size must be a string.' };
+            if (!body.hasOwnProperty('quantity') || typeof body.quantity != 'number') throw { status: 400, message: 'Property quantity must be a number.' };
+            if (!body.hasOwnProperty('images') || !Array.isArray(body.images)) throw { status: 400, message: 'Property images must be an array' };
 
             body.images.map(image => {
                 try {
@@ -28,6 +28,10 @@ class Helper {
                     throw error;
                 };
             });
+
+            if (!body.hasOwnProperty('product')) throw { status: 400, message: 'Missing product id.' };
+
+            this.validObjectId(body.product);
 
         } catch (error) {
             throw error;
@@ -38,8 +42,8 @@ class Helper {
         try {
             this.validation(body);
 
-            body.available = body.available ? body.available : false; 
-            body.quantity = null;
+            body.available = body.available ? body.available : false;
+            body.product = new ObjectId(body.product);
             body.deleted = false;
             body.isActive = body.isActive ? body.isActive : false;
             body.createdAt = new Date().toISOString();
