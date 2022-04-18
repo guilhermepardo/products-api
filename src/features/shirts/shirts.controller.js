@@ -47,6 +47,15 @@ class Controller {
         };
     };
 
+    async getShirtSpecifications(req, res) {
+        try {
+            const response = await new Service(req.app.locals.db).getShirtSpecifications(req.params.id);
+            res.json(response)
+        } catch (error) {
+            res.status(error.status).json(error);
+        };
+    };
+
 };
 
 module.exports = new Controller;

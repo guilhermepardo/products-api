@@ -21,7 +21,7 @@ class Service {
             if (model.available) {
                 let quantities = [];
 
-                const specifications = await this.collection.find({ product: model.product, deleted: false});
+                const specifications = await this.collection.find({ product: model.product, deleted: false });
 
                 specifications.map(specification => {
                     quantities.push(specification.quantity);
@@ -39,6 +39,67 @@ class Service {
             throw error;
         };
     };
+
+    async get() {
+        try {
+            const specifications = await this.collection.find();
+
+            return specifications;
+        } catch (error) {
+            throw error;
+        };
+    };
+
+    async getById(id) {
+        try {
+            const specification = await this.collection.findById(id);
+
+            if (!specification) throw { status: 400, message: 'Specification not found' };
+
+            return specification;
+        } catch (error) {
+            throw error;
+        };
+    };
+
+    // async updateById(id, body) {
+    //     try {
+    //         body.updatedAt = new Date().toISOString();
+
+    //         const specification = await this.collection.findById(id);
+
+    //         console.log('specification :>>', specification);
+
+    //         if (!specification) throw { status: 400, message: 'Specification not found' };
+
+    //         if (body.available) throw { status: 400, message: 'Specification availability cannot be changed in body.' };
+
+    //         if (body.quantity) {
+
+    //             if (body.quantity === 0) body.available = false;
+
+    //             const shirtsCollection = new MongoCollection(this.database, 'shirts');
+
+    //             let quantities = [];
+
+    //             const specifications = await this.collection.find({ product: new ObjectId(specification.product) });
+
+    //             specifications.map(specification => {
+    //                 quantities.push(specification.quantity);
+    //             });
+
+    //             const quantity = quantities.reduce((x, y) => x + y);
+
+    //             await shirtsCollection.updateOne({ _id: specification.product }, { quantity: quantity });
+    //         };
+
+    //         const updateSpecification = await this.collection.updateById(id, body);
+
+    //         return specification;
+    //     } catch (error) {
+    //         throw error;
+    //     };
+    // };
 
 };
 

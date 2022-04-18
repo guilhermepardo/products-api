@@ -1,3 +1,4 @@
+const ObjectId = require('mongodb').ObjectId; 
 const MongoCollection = require('../../../config/mongodb/Collection');
 const Helper = require('./shirt.helper');
 class Service {
@@ -60,6 +61,24 @@ class Service {
             const shirt = await this.collection.logicalDeleteById(id);
 
             if (shirt.matchedCount === 0) throw { status: 400, message: 'Shirt not found' };
+
+            return shirt;
+        } catch (error) {
+            throw error;
+        };
+    };
+
+    async getShirtSpecifications(id) {
+        try {
+            const shirt = await this.collection.findById(id);
+
+            if (!shirt) throw { status: 400, message: 'Shirt not found' };
+
+            const specificationsCollection = new MongoCollection(this.database, 'specifications')
+
+            const specifications = await specificationsCollection.find({product: new ObjectId(id)});
+
+            shirt.specifications = specifications;
 
             return shirt;
         } catch (error) {
