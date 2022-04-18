@@ -18,21 +18,25 @@ class Service {
 
             if (!shirt) throw { status: 400, message: "Product id in body doesn't exist." };
 
+            const specification = await this.collection.insertOne(model);
+
             if (model.available) {
                 let quantities = [];
 
-                const specifications = await this.collection.find({ product: model.product, deleted: false });
+                const specifications = await this.collection.find({ product: model.product, available: true });
 
-                specifications.map(specification => {
-                    quantities.push(specification.quantity);
-                });
+                let quantity = 0;
 
-                const quantity = quantities.reduce((x, y) => x + y);
+                if (specifications.length > 0) {
+                    specifications.map(specification => {
+                        quantities.push(specification.quantity);
+                    });
 
-                await shirtsCollection.updateById(body.product, { quantity: quantity });
+                    quantity = quantities.reduce((x, y) => x + y);
+
+                    await shirtsCollection.updateById(body.product, { quantity: quantity, available: quantity > 0 ? true : false });
+                };
             };
-
-            const specification = await this.collection.insertOne(model);
 
             return specification;
         } catch (error) {
@@ -62,44 +66,52 @@ class Service {
         };
     };
 
-    // async updateById(id, body) {
-    //     try {
-    //         body.updatedAt = new Date().toISOString();
+    async updateById(id, body) {
+        try {
+            body.updatedAt = new Date().toISOString();
 
-    //         const specification = await this.collection.findById(id);
+            const specification = await this.collection.findById(id);
 
-    //         console.log('specification :>>', specification);
+            if (!specification) throw { status: 400, message: 'Specification not found' };
 
-    //         if (!specification) throw { status: 400, message: 'Specification not found' };
+            if (body.hasOwnProperty('available')) throw { status: 400, message: 'Specification availability cannot be changed in body.' };
 
-    //         if (body.available) throw { status: 400, message: 'Specification availability cannot be changed in body.' };
+            if (body.hasOwnProperty('quantity')) {
+                const shirtsCollection = new MongoCollection(this.database, 'shirts');
 
-    //         if (body.quantity) {
+                let quantities = [];
 
-    //             if (body.quantity === 0) body.available = false;
+                if (body.quantity === 0 || body.quantity < 1) {
+                    body.available = false;
+                } else {
+                    body.available = true;
+                };
 
-    //             const shirtsCollection = new MongoCollection(this.database, 'shirts');
+                const specificationUpdate = await this.collection.updateById(id, body);
 
-    //             let quantities = [];
+                const specifications = await this.collection.find({ product: specification.product, available: true });
 
-    //             const specifications = await this.collection.find({ product: new ObjectId(specification.product) });
+                let quantity = 0;
 
-    //             specifications.map(specification => {
-    //                 quantities.push(specification.quantity);
-    //             });
+                if (specifications.length > 0) {
+                    specifications.map(specificationIndex => {
+                        quantities.push(specificationIndex.quantity);
+                    });
+                    quantity = quantities.reduce((x, y) => x + y);
+                };
 
-    //             const quantity = quantities.reduce((x, y) => x + y);
+                await shirtsCollection.updateOne({ _id: specification.product }, { quantity: quantity, available: quantity > 0 ? true : false });
 
-    //             await shirtsCollection.updateOne({ _id: specification.product }, { quantity: quantity });
-    //         };
+                return specificationUpdate;
+            };
 
-    //         const updateSpecification = await this.collection.updateById(id, body);
+            const specificationUpdate = await this.collection.updateById(id, body);
 
-    //         return specification;
-    //     } catch (error) {
-    //         throw error;
-    //     };
-    // };
+            return specificationUpdate;
+        } catch (error) {
+            throw error;
+        };
+    };
 
 };
 

@@ -56,7 +56,7 @@ class Collection {
         };
     };
 
-    async updateOne(query) {
+    async updateOne(query, doc) {
         try {
             query.deleted = false;
             const updateOne = await this.collection.updateOne(query,
