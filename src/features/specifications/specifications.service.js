@@ -113,6 +113,37 @@ class Service {
         };
     };
 
+    async deleteById(id) {
+        try {
+            const specification = await this.collection.findById(id);
+
+            if (!specification) throw { status: 400, message: 'Specification not found' };
+
+            const deleteSpecification = await this.collection.logicalDeleteById(id);
+
+            const shirtsCollection = new MongoCollection(this.database, 'shirts');
+
+            let quantities = [];
+
+            const specifications = await this.collection.find({ product: specification.product, available: true });
+
+            let quantity = 0;
+
+            if (specifications.length > 0) {
+                specifications.map(specification => {
+                    quantities.push(specification.quantity);
+                });
+                quantity = quantities.reduce((x, y) => x + y);
+            };
+
+            await shirtsCollection.updateOne({ _id: specification.product }, { quantity: quantity, available: quantity > 0 ? true : false });
+
+            return deleteSpecification;
+        } catch (error) {
+            throw error;
+        };
+    };
+
 };
 
 module.exports = Service;

@@ -50,14 +50,14 @@ class Controller {
         };
     };
 
-    // async deleteById(req, res) {
-    //     try {
-    //         await new Service(req.app.locals.db).deleteById(req.params.id);
-    //         res.status(204).json(null);
-    //     } catch (error) {
-    //         res.status(error.status).json(error);
-    //     };
-    // };
+    async deleteById(req, res) {
+        try {
+            await new Service(req.app.locals.db).deleteById(req.params.id);
+            res.status(204).json(null);
+        } catch (error) {
+            res.status(error.status).json(error);
+        };
+    };
 
 };
 
