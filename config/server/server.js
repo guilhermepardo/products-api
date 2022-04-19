@@ -1,6 +1,7 @@
 const express = require('express');
 const MongoConnect = require('../mongodb/Connect');
 require('dotenv').config();
+const morgan = require('morgan')
 const shirtsRoutes = require('../../src/features/shirts/shirts.route');
 const specificationsRoutes = require('../../src/features/specifications/specifications.route');
 class App {
@@ -15,6 +16,7 @@ class App {
   async middlewares() {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
+    this.app.use(morgan('dev'))
   };
 
   async routes() {
