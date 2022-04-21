@@ -1,5 +1,5 @@
 const ObjectId = require('mongodb').ObjectId;
-const MongoCollection = require('../../../config/mongodb/Collection');
+const MongoCollection = require('../../helpers/mongodb/collection.helper');
 const Helper = require('./shirt.helper');
 class Service {
     constructor(database) {
@@ -71,7 +71,7 @@ class Service {
                     await specificationsCollection.logicalDeleteById(specification._id);
                 };
             };
- 
+
             return shirt;
         } catch (error) {
             throw error;

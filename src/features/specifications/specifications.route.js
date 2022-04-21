@@ -8,5 +8,6 @@ router.get('/', validation, specificationsController.get);
 router.get('/:id', validation, specificationsController.getById);
 router.put('/:id', validation, specificationsController.updateById);
 router.delete('/:id', validation, specificationsController.deleteById);
+router.get('/shirt/:id', validation, specificationsController.getShirtSpecifications);
 
 module.exports = router;

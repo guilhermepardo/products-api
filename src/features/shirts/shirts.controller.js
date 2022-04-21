@@ -7,7 +7,11 @@ class Controller {
             const response = await new Service(req.app.locals.db).post(req.body);
             res.status(201).json(response);
         } catch (error) {
-            res.status(error.status).json(error);
+            if (error.status) {
+                res.status(error.status).json(error);
+            } else {
+                res.sendStatus(500);
+            };
         };
     };
 
@@ -16,7 +20,11 @@ class Controller {
             const response = await new Service(req.app.locals.db).get();
             res.json(response);
         } catch (error) {
-            res.status(error.status).json(error);
+            if (error.status) {
+                res.status(error.status).json(error);
+            } else {
+                res.sendStatus(500);
+            };
         };
     };
 
@@ -25,7 +33,11 @@ class Controller {
             const response = await new Service(req.app.locals.db).getById(req.params.id);
             res.json(response)
         } catch (error) {
-            res.status(error.status).json(error);
+            if (error.status) {
+                res.status(error.status).json(error);
+            } else {
+                res.sendStatus(500);
+            };
         };
     };
 
@@ -34,7 +46,11 @@ class Controller {
             await new Service(req.app.locals.db).updateById(req.params.id, req.body);
             res.status(204).json(null);
         } catch (error) {
-            res.status(error.status).json(error);
+            if (error.status) {
+                res.status(error.status).json(error);
+            } else {
+                res.sendStatus(500);
+            };
         };
     };
 
@@ -43,7 +59,11 @@ class Controller {
             await new Service(req.app.locals.db).deleteById(req.params.id);
             res.status(204).json(null);
         } catch (error) {
-            res.status(error.status).json(error);
+            if (error.status) {
+                res.status(error.status).json(error);
+            } else {
+                res.sendStatus(500);
+            };
         };
     };
 
@@ -52,7 +72,11 @@ class Controller {
             const response = await new Service(req.app.locals.db).getShirtSpecifications(req.params.id);
             res.json(response)
         } catch (error) {
-            res.status(error.status).json(error);
+            if (error.status) {
+                res.status(error.status).json(error);
+            } else {
+                res.sendStatus(500);
+            };
         };
     };
 

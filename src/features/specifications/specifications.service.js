@@ -1,5 +1,5 @@
 const ObjectId = require('mongodb').ObjectId;
-const MongoCollection = require('../../../config/mongodb/Collection');
+const MongoCollection = require('../../helpers/mongodb/collection.helper');
 const Helper = require('./specifications.helper');
 class Service {
     constructor(database) {
@@ -139,6 +139,16 @@ class Service {
             await shirtsCollection.updateOne({ _id: specification.product }, { quantity: quantity, available: quantity > 0 ? true : false });
 
             return deleteSpecification;
+        } catch (error) {
+            throw error;
+        };
+    };
+
+    async getShirtSpecifications(id) {
+        try {
+            const specifications = await this.collection.find({ _id: new ObjectId(id) });
+
+            return specifications;
         } catch (error) {
             throw error;
         };

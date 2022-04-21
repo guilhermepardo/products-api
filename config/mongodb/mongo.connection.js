@@ -26,7 +26,7 @@ class Connect {
     async database(databaseName) {
         try {
             const database = this.client.db(databaseName);
-            console.log('Sucessfully connected to database');
+            console.log('Sucessfully connected to database.');
             return database;
         } catch (error) {
             throw error;

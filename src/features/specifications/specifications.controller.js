@@ -9,8 +9,9 @@ class Controller {
         } catch (error) {
             if (error.status) {
                 res.status(error.status).json(error);
-            }
-            res.sendStatus(500);
+            } else {
+                res.sendStatus(500);
+            };
         };
     };
 
@@ -21,8 +22,9 @@ class Controller {
         } catch (error) {
             if (error.status) {
                 res.status(error.status).json(error);
-            }
-            res.sendStatus(500);
+            } else {
+                res.sendStatus(500);
+            };
         };
     };
 
@@ -33,8 +35,9 @@ class Controller {
         } catch (error) {
             if (error.status) {
                 res.status(error.status).json(error);
-            }
-            res.sendStatus(500);
+            } else {
+                res.sendStatus(500);
+            };
         };
     };
 
@@ -45,8 +48,9 @@ class Controller {
         } catch (error) {
             if (error.status) {
                 res.status(error.status).json(error);
-            }
-            res.sendStatus(500);
+            } else {
+                res.sendStatus(500);
+            };
         };
     };
 
@@ -55,7 +59,24 @@ class Controller {
             await new Service(req.app.locals.db).deleteById(req.params.id);
             res.status(204).json(null);
         } catch (error) {
-            res.status(error.status).json(error);
+            if (error.status) {
+                res.status(error.status).json(error);
+            } else {
+                res.sendStatus(500);
+            };
+        };
+    };
+
+    async getShirtSpecifications(req, res) {
+        try {
+            const response = await new Service(req.app.locals.db).getShirtSpecifications(req.params.id);
+            res.json(response)
+        } catch (error) {
+            if (error.status) {
+                res.status(error.status).json(error);
+            } else {
+                res.sendStatus(500);
+            };
         };
     };
 

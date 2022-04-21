@@ -1,5 +1,5 @@
 const express = require('express');
-const MongoConnect = require('../mongodb/Connect');
+const MongoConnect = require('../mongodb/mongo.connection');
 require('dotenv').config();
 const morgan = require('morgan')
 const shirtsRoutes = require('../../src/features/shirts/shirts.route');
